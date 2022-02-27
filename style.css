@@ -1,0 +1,129 @@
+.page {
+  margin-bottom: 2em;
+}
+
+.logo {
+  width: 30%;
+  margin-right: 20%;
+}
+
+.boxesMenu {
+  margin-top: 2em;
+}
+
+.boxesMenu :hover {
+  opacity: 0.8;
+}
+
+.boxesMenu a img {
+  margin: 0 17%;
+  width: 70%;
+  height: 70%;
+}
+
+.boxesMenu a {
+  text-decoration: none;
+}
+
+.boxesMenu h2 {
+  color: rgb(0, 20, 78);
+  /* font-weight: bold; */
+  /* text-shadow: 0px 0px 1px #aaa; */
+}
+
+.bi-plus-square,
+.bi-pencil-square,
+.bi-check-square,
+.bi-journal-text {
+  font-size: 800% !important;
+}
+.text-center {
+  color: rgb(16, 106, 136);
+}
+
+.espace {
+  width: 15em;
+}
+
+.g-2 {
+  padding: 2em;
+}
+
+.delete {
+  width: 5em;
+}
+
+.date {
+  width: 8em;
+}
+
+.date * {
+  text-align: center;
+}
+
+.marge-haut {
+  margin-top: 3.25em;
+}
+
+.marge-haut1 {
+  margin-top: 1em;
+}
+
+.title {
+  /* color:#4682B4; */
+  color: rgb(18, 18, 201, 0.863);
+  /* text-shadow: 0px 0px 2px #aaa; */
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#recherche {
+  display: none;
+}
+
+.lignes-liste:hover {
+  background: rgb(236, 234, 234);
+}
+
+.liens-liste {
+  display: block;
+  text-decoration: none;
+  color: black;
+  padding: 16px 0;
+}
+
+.liens-liste:hover {
+  color: black;
+}
+
+.visualisation {
+  display: block;
+  padding: 16px;
+}
+
+.colonneLongue {
+  max-width: 15em;
+}
+
+.text-center {
+  color: black;
+}
+
+.card-title {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.form-check {
+  font-size: 22px;
+  margin-top: 1em;
+}
+
+thead .text-center,
+th {
+  color: blue;
+}
+
+.form-control[readonly] {
+  background-color: #fff;
+}
