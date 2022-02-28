@@ -3,44 +3,38 @@ $nomPage = "Liste " . $_GET['page']; // Correspond au titre de la page
 $nbSaut = 1; // Correspond au nombre de saut a faire pour aller jusqu'a la racine du projet
 require('header.php');
 
-session_start();
-
 $listeAgents = getNomAgent(); // Liste avec l'ensemble des Agent pour liste déroulante dans la recherche
 $listeServices = getServices(); // Liste avec l'ensemble des Services pour liste déroulante dans la recherche
 $listeResponsable = getNomResponsable();
 
 if (isset($_POST['Recherche'])) {
-     
+
     $nomAgent = $_POST['nomAgent'];
-    if($role == "Agent" ){
+    if ($role == "Agent") {
         $nomAgent = $nomPrenomUser;
     }
 
     $nomTuteur = $_POST['nomTuteur'];
-        
+
     $nomResponsable = $_POST['nomResponsable'];
 
     $secteur = $_POST['secteur'];
     $domaine = $_POST['domaine'];
 
 
-    if($_POST['dateDu'] == null){
+    if ($_POST['dateDu'] == null) {
         $dateDu = "2000-01-01";
-    }
-    else{
+    } else {
         $dateDu = $_POST['dateDu'];
         $dateDu = dateFR2EN($dateDu);
     }
 
-    if($_POST['dateAu'] == null){
+    if ($_POST['dateAu'] == null) {
         $dateAu = date("Y-m-d");
-    }
-    else{
+    } else {
         $dateAu = $_POST['dateAu'];
-        $dateAu = dateFR2EN($dateAu);    
+        $dateAu = dateFR2EN($dateAu);
     }
-    
-   
 }
 
 if ($_GET['page'] == "Suivi") {
@@ -51,14 +45,11 @@ if ($_GET['page'] == "Suivi") {
         } else {
             $listes = getListe('Creer', $nomPrenomUser, $role);
         }
-
-        
     } else {
         $listes = getListe('Creer', $nomPrenomUser, $role);
         // print_r(getListe('Creer'));
     }
-} 
-elseif ($_GET['page'] == "Bilan") {
+} elseif ($_GET['page'] == "Bilan") {
     if (isset($_POST['Recherche'])) {
 
         if (!empty($_POST['nomAgent']) || !empty($_POST['nomTuteur']) || !empty($_POST['nomResponsable']) || !empty($_POST['secteur']) || !empty($_POST['dateDu']) || !empty($_POST['dateAu'])) {
@@ -69,8 +60,7 @@ elseif ($_GET['page'] == "Bilan") {
     } else {
         $listes = getListe('Finalisation', $nomPrenomUser, $role);
     }
-} 
-elseif ($_GET['page'] == "Historique") {
+} elseif ($_GET['page'] == "Historique") {
     if (isset($_POST['Recherche'])) {
 
         if (!empty($_POST['nomAgent']) || !empty($_POST['nomTuteur']) || !empty($_POST['nomResponsable']) || !empty($_POST['secteur']) || !empty($_POST['dateDu']) || !empty($_POST['dateAu'])) {
@@ -80,7 +70,7 @@ elseif ($_GET['page'] == "Historique") {
         }
     } else {
         $listes = getListe('Fermer', $nomPrenomUser, $role);
-    }    
+    }
 }
 
 ?>
@@ -125,14 +115,14 @@ elseif ($_GET['page'] == "Historique") {
     <div class="d-flex justify-content-between">
         <a class="btn btn-outline-primary" href="index.php" role="button"><i class="bi bi-arrow-bar-left"></i> Menu</a>
 
-        <?php if($role == "Responsable"): ?>
+        <?php if ($role == "Responsable") : ?>
             <button class="btn btn-outline-primary boutonRecherche" id="afficheRecherche">
                 <i id="icone" class="bi bi-chevron-expand"></i> Recherche
             </button>
         <?php endif; ?>
     </div>
 
-    <?php if($role == "Responsable"): ?>
+    <?php if ($role == "Responsable") : ?>
         <!-- Contenu Recherche -->
         <div id="recherche">
             <form action="liste.php?page=<?= $_GET['page'] ?>" method="POST">
@@ -155,26 +145,26 @@ elseif ($_GET['page'] == "Historique") {
                 <div class="row g-2">
 
                     <div class="col-md">
-                    <div class="form-floating">
-                                <select class="form-select select" name="nomResponsable" aria-label="Nom Responsable">
-                                    <option value=""></option>
-                                    <?php foreach ($listeResponsable as $nom) : ?>
-                                        <option value="<?= $nom->nom_prenom ?>"><?= $nom->nom_prenom ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <label for="nomResponsable">Nom Responsable</label>
+                        <div class="form-floating">
+                            <select class="form-select select" name="nomResponsable" aria-label="Nom Responsable">
+                                <option value=""></option>
+                                <?php foreach ($listeResponsable as $nom) : ?>
+                                    <option value="<?= $nom->nom_prenom ?>"><?= $nom->nom_prenom ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <label for="nomResponsable">Nom Responsable</label>
                         </div>
                     </div>
 
                     <div class="col-md">
                         <div class="form-floating">
-                                <select class="form-select select" name="nomTuteur" aria-label="Nom Tuteur">
-                                    <option value=""></option>
-                                    <?php foreach ($listeAgents as $nom) : ?>
-                                        <option value="<?= $nom->nom_prenom ?>"><?= $nom->nom_prenom ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <label for="nomTuteur">Nom Tuteur</label>
+                            <select class="form-select select" name="nomTuteur" aria-label="Nom Tuteur">
+                                <option value=""></option>
+                                <?php foreach ($listeAgents as $nom) : ?>
+                                    <option value="<?= $nom->nom_prenom ?>"><?= $nom->nom_prenom ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <label for="nomTuteur">Nom Tuteur</label>
                         </div>
                     </div>
 
@@ -250,26 +240,25 @@ elseif ($_GET['page'] == "Historique") {
             <tbody>
                 <?php foreach ($listes as $element) : ?>
                     <tr class="lignes-liste">
-                        <?php 
-                            $nomTuteurs =  explode(' / ', $element->nomTuteur);
-                            
-                            if(in_array($nomPrenomUser, $nomTuteurs)){
-                                $_SESSION['isTuteur'][$element->id_TCs] = true;
-                            }
-                            else{
-                                $_SESSION['isTuteur'][$element->id_TCs] = false;
-                            }
+                        <?php
+                        $nomTuteurs =  explode(' / ', $element->nomTuteur);
+
+                        if (in_array($nomPrenomUser, $nomTuteurs)) {
+                            $_SESSION['isTuteur'][$element->id_TCs] = true;
+                        } else {
+                            $_SESSION['isTuteur'][$element->id_TCs] = false;
+                        }
                         ?>
                         <td><?php if ($_GET['page'] != "Historique" && ($role != "Agent" || $_GET['page'] != "Suivi" || $_SESSION['isTuteur'][$element->id_TCs])) : ?><a class="liens-liste" href="<?= $_GET['page'] . "/" . $_GET['page'] . ".php?id=" . $element->id_TCs; ?>"><?php endif;
-                                                                                                                                                                                echo getP_Nom($element->nomAgent); ?></a></td>
+                                                                                                                                                                                                                                                                            echo getP_Nom($element->nomAgent); ?></a></td>
                         <td><?php if ($_GET['page'] != "Historique" && ($role != "Agent" || $_GET['page'] != "Suivi" || $_SESSION['isTuteur'][$element->id_TCs])) : ?><a class="liens-liste" href="<?= $_GET['page'] . "/" . $_GET['page'] . ".php?id=" . $element->id_TCs; ?>"><?php endif;
-                                                                                                                                                                                echo getP_Nom($element->nomTuteur); ?></a></td>
+                                                                                                                                                                                                                                                                            echo getP_Nom($element->nomTuteur); ?></a></td>
                         <td><?php if ($_GET['page'] != "Historique" && ($role != "Agent" || $_GET['page'] != "Suivi" || $_SESSION['isTuteur'][$element->id_TCs])) : ?><a class="liens-liste" href="<?= $_GET['page'] . "/" . $_GET['page'] . ".php?id=" . $element->id_TCs; ?>"><?php endif;
-                                                                                                                                                                                echo $element->secteur; ?></a></td>
+                                                                                                                                                                                                                                                                            echo $element->secteur; ?></a></td>
                         <td><?php if ($_GET['page'] != "Historique" && ($role != "Agent" || $_GET['page'] != "Suivi" || $_SESSION['isTuteur'][$element->id_TCs])) : ?><a class="liens-liste" href="<?= $_GET['page'] . "/" . $_GET['page'] . ".php?id=" . $element->id_TCs; ?>"><?php endif;
-                                                                                                                                                                                echo $element->objectif_global; ?></a></td>
+                                                                                                                                                                                                                                                                            echo $element->objectif_global; ?></a></td>
                         <td><?php if ($_GET['page'] != "Historique" && ($role != "Agent" || $_GET['page'] != "Suivi" || $_SESSION['isTuteur'][$element->id_TCs])) : ?><a class="liens-liste" href="<?= $_GET['page'] . "/" . $_GET['page'] . ".php?id=" . $element->id_TCs; ?>"><?php endif;
-                                                                                                                                                                                echo $element->pourcentageGlobal . " %"; ?></a></td>
+                                                                                                                                                                                                                                                                            echo $element->pourcentageGlobal . " %"; ?></a></td>
                         <?php if ($_GET['page'] == "Suivi") :  ?><td><a class="visualisation text-center" href="<?= $_GET['page'] . "/visualisation" . $_GET['page'] . ".php?id=" . $element->id_TCs; ?>"><i class="bi bi-eye"></i></a></td>
                         <?php else :  ?> <td><a class="visualisation text-center" href="<?= "visualisation.php?id=" . $element->id_TCs . "&page=" . $_GET['page']; ?>"><i class="bi bi-eye"></i></a></td><?php endif; ?>
                     </tr>

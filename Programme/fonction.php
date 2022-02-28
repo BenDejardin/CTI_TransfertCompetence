@@ -1,17 +1,20 @@
 <?php
+https: //github.com/BenDejardin/CTI_TransfertCompetence.git
 require('inc/connexion-db.php');
 
 // Convertie une date FR prise en argument en date EN
-function dateFR2EN($date){
+function dateFR2EN($date)
+{
     $listeChampsDate = explode("/", $date);
-    $dateAnglais = $listeChampsDate[2]."/".$listeChampsDate[1]."/".$listeChampsDate[0];
+    $dateAnglais = $listeChampsDate[2] . "/" . $listeChampsDate[1] . "/" . $listeChampsDate[0];
     return $dateAnglais;
 }
 
 // Convertie une date EN prise en argument en date FR
-function dateEN2FR($date){
+function dateEN2FR($date)
+{
     $listeChampsDate = explode("-", $date);
-    $dateFrancaise = $listeChampsDate[2]."/".$listeChampsDate[1]."/".$listeChampsDate[0];
+    $dateFrancaise = $listeChampsDate[2] . "/" . $listeChampsDate[1] . "/" . $listeChampsDate[0];
     return $dateFrancaise;
 }
 
@@ -31,21 +34,20 @@ function getNbTransfCpts()
 // etat => Creer, pour la liste des Historiques ; 
 function getListe($etat, $nom, $role)
 {
-   global $pdo;
-    if ($role == 'Agent'){
+    global $pdo;
+    if ($role == 'Agent') {
         $query = "SELECT `transfert_competences`.`id_TCs`, agents.nomAgent, agents.nomTuteur, agents.secteur, `transfert_competences`.`objectif_global`,`transfert_competences`.`pourcentageGlobal`, `transfert_competences`.`date_creation` FROM `transfert_competences`, agents WHERE transfert_competences.etat = :etat AND `transfert_competences`.`id_TCs` = agents.id_TCs AND (agents.nomTuteur LIKE '%$nom%' OR agents.nomAgent = :nom) ORDER BY `transfert_competences`.date_creation DESC";
-    }
-    elseif($role == 'Responsable'){
+    } elseif ($role == 'Responsable') {
         $query = "SELECT `transfert_competences`.`id_TCs`, agents.nomAgent, agents.nomTuteur, agents.secteur, `transfert_competences`.`objectif_global`,`transfert_competences`.`pourcentageGlobal`, `transfert_competences`.`date_creation` FROM `transfert_competences`, agents WHERE transfert_competences.etat = :etat AND `transfert_competences`.`id_TCs` = agents.id_TCs ORDER BY `transfert_competences`.date_creation DESC";
     }
     $prep = $pdo->prepare($query);
-    if($role != "Responsable"){
+    if ($role != "Responsable") {
         $prep->bindValue(':nom', $nom, PDO::PARAM_STR);
     }
-    
+
     $prep->bindValue(':etat', $etat, PDO::PARAM_STR);
     $prep->execute();
-   
+
 
     return $prep->fetchAll();
 }
@@ -72,7 +74,7 @@ function recherche($etat, $nomAgent, $nomTuteur, $nomResponsable, $secteur, $dom
         
     )
     ORDER BY `transfert_competences`.`date_creation` DESC";
-   
+
     $prep = $pdo->prepare($query);
     $prep->bindValue(':etat', $etat, PDO::PARAM_STR);
     $prep->bindValue(':dateDu', $dateDu, PDO::PARAM_STR);
@@ -150,10 +152,10 @@ function getNomResponsable()
 function getP_Nom($nom)
 {
     $tabNom = explode(' ', $nom);
-    if(count($tabNom) == 2){
-        return $tabNom[1][0].".".$tabNom[0];
+    if (count($tabNom) == 2) {
+        return $tabNom[1][0] . "." . $tabNom[0];
     }
-    return $tabNom[1][0].".".$tabNom[0].' / '.$tabNom[4][0].".".$tabNom[3];
+    return $tabNom[1][0] . "." . $tabNom[0] . ' / ' . $tabNom[4][0] . "." . $tabNom[3];
 }
 
 // Récupère l'ensemble des services, utilisé pour les listes déroulantes
@@ -165,4 +167,3 @@ function getServices()
     $prep->execute();
     return $prep->fetchAll();
 }
-?>

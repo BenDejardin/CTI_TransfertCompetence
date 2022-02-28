@@ -1,9 +1,4 @@
 <?php
-session_start();
-
-if(!$_SESSION['role']){
-    header("Location: Login/login.php");
-}
 
 // Titre de la page
 $nomPage = "Transfert de Compétences";
@@ -18,7 +13,7 @@ require('header.php');
 if (isset($_POST['Creation'])) { ?>
 
     <script>
-        setTimeout("showAlerte()", 2000);  // Affiche le message d'alerte durant 2 sec  
+        setTimeout("showAlerte()", 2000); // Affiche le message d'alerte durant 2 sec  
     </script>
     <!-- Message d'alerte -->
     <div id="alerte" class="alert alert-success text-center" role="alert">
@@ -28,7 +23,7 @@ if (isset($_POST['Creation'])) { ?>
     <?php
 
     // Si nous avons 2 Tuteur ont fusionne les deux sous forme Tuteur1 / Tuteur2 
-    if (count($_POST['nomTuteur']) == 2) {
+    if (is_array($_POST['nomTuteur']) && count($_POST['nomTuteur']) == 2) {
         $nomTuteur = $_POST['nomTuteur'][0] . ' / ' . $_POST['nomTuteur'][1];
     } else {
         $nomTuteur = $_POST['nomTuteur'];
@@ -73,7 +68,7 @@ if (isset($_POST['Creation'])) { ?>
     }
 
     // Insert l'ensemble des données récupérer dans la BDD
-    $query2 = "INSERT INTO `transfert_competences`(`id_TCs`, `objectif_global`, `choix_validation`, `etat`, `date_creation`, `date_cloture`,`pourcentageGlobal`) VALUES ($nbTransfCpts," . '"' . $objG . '"' . ",'','Creer','$date','',0)";  
+    $query2 = "INSERT INTO `transfert_competences`(`id_TCs`, `objectif_global`, `choix_validation`, `etat`, `date_creation`, `date_cloture`,`pourcentageGlobal`) VALUES ($nbTransfCpts," . '"' . $objG . '"' . ",'','Creer','$date','',0)";
     $pdo->query($query2);
 
     $query3 = "INSERT INTO `agents`(`id_TCs`, `nomAgent`, `nomTuteur`, `nomResponsable`, `secteur`, `domaine`, `commentaire_A`, `commentaire_T`, `commentaire_R`) VALUES ($nbTransfCpts, " . '"' . $nomAgent . '"' . "," . '"' . $nomTuteur . '"' . ", " . '"' . $nomResponsable . '"' . ", " . '"' . $secteur . '"' . ", " . '"' . $domaine . '"' . ", '', '','')";
@@ -98,7 +93,7 @@ if (isset($_GET['cloture']) && isset($_GET['id'])) {
     </div>
 
 <?php
-} 
+}
 // Si il y a cloture d'un bilan
 elseif (isset($_GET['clotureBilan'])) { ?>
 
@@ -116,17 +111,17 @@ elseif (isset($_GET['clotureBilan'])) { ?>
 <!-- Onglet de navigation -->
 <div class="container d-flex justify-content-around page">
 
-<?php if ($role == "Responsable") { ?>
-    <!-- Partie Creation -->
-    <div class="boxesMenu">
-        <a href="Creation/creation.php">
-            <!-- <i class="bi bi-plus-square bi-10x"></i> -->
-            <img src="../img/Creation_Fiche.jpg" alt="Création d'une Fiche de Transfert de Compétences">
+    <?php if ($role == "Responsable") { ?>
+        <!-- Partie Creation -->
+        <div class="boxesMenu">
+            <a href="Creation/creation.php">
+                <!-- <i class="bi bi-plus-square bi-10x"></i> -->
+                <img src="../img/Creation_Fiche.jpg" alt="Création d'une Fiche de Transfert de Compétences">
 
-            <h2 class="text-center">Création</h2>
-        </a>
-    </div>
-<?php  } ?>
+                <h2 class="text-center">Création</h2>
+            </a>
+        </div>
+    <?php  } ?>
 
     <!-- Partie Suivi -->
     <div class="boxesMenu">
